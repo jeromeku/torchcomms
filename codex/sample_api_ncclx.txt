@@ -1,0 +1,200 @@
+comms/ncclx/headers/README.md:1:This directory contains forwarding public headers for the NCCLX library.
+comms/ncclx/headers/README.md:4:This allows support for header namespacing to guarantee that NCCLX headers will be over NCCL headers when building with both libraries
+comms/ncclx/headers/nccl.h:4:#include "comms/ncclx/headers/helpers.h"
+comms/ncclx/headers/CtranExComm.h:4:#include "comms/ncclx/headers/helpers.h"
+comms/ncclx/v2_27/src/debug.cc:41:    // NCCLX -> Enable CTRAN subsystems logging as per NCCL_DEBUG_SUBSYS
+comms/ncclx/v2_27/meta/collectives/pCollectives.cc:11:namespace ncclx {
+comms/ncclx/v2_27/meta/collectives/pCollectives.cc:90:    const ncclx::Hints& hints,
+comms/ncclx/v2_27/meta/collectives/pCollectives.cc:291:} // namespace ncclx
+comms/ncclx/v2_27/meta/collectives/tests/AllGatherPTest.cc:128:  ncclx::Hints hints;
+comms/ncclx/v2_27/meta/collectives/tests/AllGatherPTest.cc:130:  auto res = ncclx::allGatherInit(
+comms/ncclx/v2_27/meta/collectives/tests/AllGatherPTest.cc:139:    res = ncclx::allGatherExec(sendBuf, count, ncclInt, request);
+comms/ncclx/v2_27/meta/collectives/tests/AllGatherPTest.cc:152:  ncclx::pFree(request);
+comms/ncclx/v2_27/meta/NcclMemoryUtils.h:13:namespace ncclx::memory {
+comms/ncclx/v2_27/meta/NcclMemoryUtils.h:21:    std::shared_ptr<ncclx::memory::memCacheAllocator> memCache,
+comms/ncclx/v2_27/meta/NcclMemoryUtils.h:23:  ncclx::memory::allocatorIpcDesc d;
+comms/ncclx/v2_27/meta/NcclMemoryUtils.h:24:  NCCLCHECK(metaCommToNccl(ncclx::memory::allocateShareableBuffer(
+comms/ncclx/v2_27/meta/NcclMemoryUtils.h:47:} // namespace ncclx::memory
+comms/ncclx/v2_27/meta/py/wrapper.cc:5:extern void ncclxSetIteration(int64_t);
+comms/ncclx/v2_27/meta/py/wrapper.cc:6:extern int64_t ncclxGetIteration();
+comms/ncclx/v2_27/meta/py/wrapper.cc:8:namespace ncclx {
+comms/ncclx/v2_27/meta/py/wrapper.cc:13:} // namespace ncclx
+comms/ncclx/v2_27/meta/py/wrapper.cc:15:__attribute__((noinline, visibility("default"))) bool ncclxSetHint(
+comms/ncclx/v2_27/meta/py/wrapper.cc:18:  return ncclx::setGlobalHint(name, val);
+comms/ncclx/v2_27/meta/py/wrapper.cc:21:__attribute__((noinline, visibility("default"))) bool ncclxResetHint(
+comms/ncclx/v2_27/meta/py/wrapper.cc:23:  return ncclx::resetGlobalHint(name);
+comms/ncclx/v2_27/meta/py/wrapper.cc:26:PYBIND11_MODULE(ncclx_trainer_context, m) {
+comms/ncclx/v2_27/meta/py/wrapper.cc:28:  m.def("setIteration", &ncclxSetIteration);
+comms/ncclx/v2_27/meta/py/wrapper.cc:29:  m.def("getIteration", &ncclxGetIteration);
+comms/ncclx/v2_27/meta/py/wrapper.cc:30:  m.def("setHint", &ncclxSetHint);
+comms/ncclx/v2_27/meta/py/wrapper.cc:31:  m.def("resetHint", &ncclxResetHint);
+comms/ncclx/v2_27/meta/commDump.h:10:namespace meta::comms::ncclx {
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.h:8:namespace ncclx {
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.h:21:} // namespace ncclx
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.h:14:namespace ncclx::comms_monitor {
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.h:18:  ncclx::CommStateX commState;
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.h:66:} // namespace ncclx::comms_monitor
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.h:69:    const ncclx::comms_monitor::NcclCommMonitorInfo&
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.cc:14:namespace ncclx::comms_monitor {
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.cc:37:      .commState = ncclx::CommStateX{*comm->ctranComm_->statex_},
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.cc:84:      ncclx::colltrace::NetworkPerfMonitor::getInstance();
+comms/ncclx/v2_27/meta/comms-monitor/CommsMonitor.cc:170:} // namespace ncclx::comms_monitor
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.cc:11:namespace ncclx {
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.cc:118:  std::vector<ncclx::NvlFabricTopology> nvlFabricTopos;
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.cc:122:    ncclx::NvlFabricTopology topo;
+comms/ncclx/v2_27/meta/commstate/FactoryCommStateX.cc:181:} // namespace ncclx
+comms/ncclx/v2_27/meta/trainer/trainer_wrapper.cc:5:#include "ncclx/trainer/trainer.h" // @manual
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:8:using ncclx::GlobalHints;
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:137:  ncclx::GlobalHintEntry sendrecvEntry = {
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:142:  ncclx::GlobalHintEntry allgatherEntry = {
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:147:  ncclx::GlobalHintEntry allreduceEntry = {
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:196:namespace ncclx::algoconf {
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.cc:250:} // namespace ncclx::algoconf
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.h:7:namespace ncclx::algoconf {
+comms/ncclx/v2_27/meta/algoconf/AlgoConfig.h:26:} // namespace ncclx::algoconf
+comms/ncclx/v2_27/src/include/transport.h:61:// [META]: increase size from 256 to 288 to accommodate for NCCLX's new fields
+comms/ncclx/v2_27/src/collectives.cc:120:  auto algo = ncclx::algoconf::getAllReduceAlgo();
+comms/ncclx/v2_27/src/collectives.cc:122:  // [NCCLX] Redirect to CTRAN if enabled and applicable
+comms/ncclx/v2_27/src/collectives.cc:228:  if ((ncclx::algoconf::getSendRecvAlgo() == NCCL_SENDRECV_ALGO::ctran) &&
+comms/ncclx/v2_27/src/collectives.cc:270:  if ((ncclx::algoconf::getSendRecvAlgo() == NCCL_SENDRECV_ALGO::ctran) &&
+comms/ncclx/v2_27/src/collectives.cc:434:ncclResult_t ncclx::alltoallvDynamic(
+comms/ncclx/v2_27/src/collectives.cc:441:    const ncclx::Hints& hints,
+comms/ncclx/v2_27/src/collectives.cc:463:ncclResult_t ncclx::alltoallvDynamicSplit(
+comms/ncclx/v2_27/src/collectives.cc:470:    const ncclx::Hints& hints,
+comms/ncclx/v2_27/src/collectives.cc:491:ncclResult_t ncclx::alltoallvDynamicSplitNonContig(
+comms/ncclx/v2_27/src/collectives.cc:503:  const ncclx::Hints& hints,
+comms/ncclx/v2_27/meta/commstate/tests/CommStateXTest.cc:18:namespace ncclx {
+comms/ncclx/v2_27/meta/commstate/tests/CommStateXTest.cc:94:  auto state = ncclx::createCommStateXFromNcclComm(&comm);
+comms/ncclx/v2_27/meta/commstate/tests/CommStateXTest.cc:138:  auto state = ncclx::createCommStateXFromNcclComm(&comm);
+comms/ncclx/v2_27/meta/commstate/tests/CommStateXTest.cc:180:  auto state = ncclx::createCommStateXFromNcclComm(&comm);
+comms/ncclx/v2_27/meta/commstate/tests/CommStateXTest.cc:223:} // namespace ncclx
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:13:  ASSERT_FALSE(ncclx::setGlobalHint("algo_sendrecv", "orig"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:14:  auto res = ncclx::getGlobalHint("algo_sendrecv");
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:17:  ASSERT_FALSE(ncclx::resetGlobalHint("algo_sendrecv"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:28:  ASSERT_TRUE(ncclx::setGlobalHint("algo_sendrecv", "orig"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:29:  res = ncclx::getGlobalHint("algo_sendrecv");
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigInitTest.cc:32:  ASSERT_TRUE(ncclx::resetGlobalHint("algo_sendrecv"));
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:25:  comm->ctranComm_->statex_ = std::make_unique<ncclx::CommStateX>(
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:32:      std::vector<ncclx::RankTopology>(), /* rankTopologies */
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:39:// Need to be in the ncclx::comms_monitor scope to be the friend class
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:40:namespace ncclx::comms_monitor {
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:58:} // namespace ncclx::comms_monitor
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorUT.cc:60:using namespace ncclx::comms_monitor;
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:35:        throw ncclx::tcpstore::detail::NetworkError("Socket Timeout");     \
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:37:        throw ncclx::tcpstore::detail::NetworkError(std::strerror(errno)); \
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:46:namespace ncclx::tcpstore::utils {
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:81:      throw ncclx::tcpstore::detail::NetworkError(
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:105:      throw ncclx::tcpstore::detail::NetworkError(
+comms/ncclx/v2_27/meta/tcpstore/TCPUtils.h:145:} // namespace ncclx::tcpstore::utils
+comms/ncclx/v2_27/meta/commDump.cc:27:namespace meta::comms::ncclx {
+comms/ncclx/v2_27/meta/commDump.cc:43:} // namespace meta::comms::ncclx
+comms/ncclx/v2_27/meta/commDump.cc:45:using meta::comms::ncclx::dumpNewCollTrace;
+comms/ncclx/v2_27/meta/commDump.cc:103:    const ncclx::CommStateX* statex,
+comms/ncclx/v2_27/meta/commDump.cc:126:    ncclx::colltrace::MapperTrace& mapperTrace,
+comms/ncclx/v2_27/meta/commDump.cc:196:    const ncclx::comms_monitor::NcclCommMonitorInfo& info) {
+comms/ncclx/v2_27/meta/commDump.cc:223:        ncclx::comms_monitor::CommsMonitor::getCommInfoByCommPtr(comm);
+comms/ncclx/v2_27/meta/commDump.cc:255:    auto mapperTrace = ncclx::colltrace::getMapperTrace(comm->ctranComm_.get());
+comms/ncclx/v2_27/meta/commDump.cc:272:  auto commDumpsMaybe = ncclx::comms_monitor::CommsMonitor::commDumpAll();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:11:using ncclx::algoconf::getAllGatherAlgo;
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:12:using ncclx::algoconf::getAllReduceAlgo;
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:13:using ncclx::algoconf::getSendRecvAlgo;
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:14:using ncclx::algoconf::testOnlyResetAlgoConfig;
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:25:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:33:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:41:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:50:    ASSERT_TRUE(ncclx::setGlobalHint(hintName, "ctran"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:52:    auto getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:58:    ASSERT_TRUE(ncclx::resetGlobalHint(hintName));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:59:    getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:69:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:90:      ASSERT_TRUE(ncclx::setGlobalHint(hintName, hintVal));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:92:      auto getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:98:      ASSERT_TRUE(ncclx::resetGlobalHint(hintName));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:99:      getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:109:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:127:      ASSERT_TRUE(ncclx::setGlobalHint(hintName, hintVal));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:129:      auto getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:135:      ASSERT_TRUE(ncclx::resetGlobalHint(hintName));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:136:      getHintVal = ncclx::getGlobalHint(hintName);
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:146:  ncclx::testOnlyResetGlobalHints();
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:152:  ASSERT_FALSE(ncclx::resetGlobalHint("algo_dummy_hint_name"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:155:  ASSERT_TRUE(ncclx::setGlobalHint("algo_sendrecv", "dummy_val"));
+comms/ncclx/v2_27/meta/algoconf/tests/AlgoConfigTest.cc:159:  auto getHintVal = ncclx::getGlobalHint("algo_sendrecv");
+comms/ncclx/v2_27/meta/tcpstore/TCPSocket.cc:22:namespace ncclx::tcpstore::detail {
+comms/ncclx/v2_27/meta/tcpstore/TCPSocket.cc:498:} // namespace ncclx::tcpstore::detail
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorDist.cc:13:using namespace ncclx::comms_monitor;
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorDist.cc:15:namespace ncclx::comms_monitor {
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorDist.cc:27:} // namespace ncclx::comms_monitor
+comms/ncclx/v2_27/meta/comms-monitor/tests/CommsMonitorDist.cc:41:    ncclx::comms_monitor::CommsMonitorTest::resetCommsMap();
+comms/ncclx/v2_27/src/init.cc:188:// Free NCCLX-specific resources
+comms/ncclx/v2_27/src/init.cc:189:static void ncclxCommFree(ncclComm_t comm) {
+comms/ncclx/v2_27/src/init.cc:197:    ncclx::transport::tranportProxyShutdown(comm);
+comms/ncclx/v2_27/src/init.cc:293:  ncclxCommFree(comm);
+comms/ncclx/v2_27/src/init.cc:591:static ncclResult_t ncclxGetDeviceRackSerial(ncclComm* comm, int* rackSerial) {
+comms/ncclx/v2_27/src/init.cc:682:        ncclx::assignMnnvlCliqueIdBasedOnCliqueSize(&cliqueId);
+comms/ncclx/v2_27/src/init.cc:692:        NCCLCHECK(ncclxGetDeviceRackSerial(comm, &info->rackSerial));
+comms/ncclx/v2_27/src/init.cc:860:      // (meta-ncclx) Compute min and max compute capabilities
+comms/ncclx/v2_27/src/init.cc:877:    // (meta-ncclx) Have NVLS Reg support if there is only one intra process rank
+comms/ncclx/v2_27/src/init.cc:1475:static ncclResult_t ncclxCommGetSplitInfo(struct ncclComm* comm, struct ncclComm* parent, int color, int key, int* nRanksRet, int* myRankRet, int* parentRanksRet) {
+comms/ncclx/v2_27/src/init.cc:1482:      "Empty comm or undefined config of splitGroupRanks or splitGroupSize passed to ncclxCommGetSplitInfo");
+comms/ncclx/v2_27/src/init.cc:1549:        NCCLCHECKGOTO(ncclxCommGetSplitInfo(comm, job->parent, job->color, job->key, &job->nranks, &job->myrank, parentRanks), res, fail);
+comms/ncclx/v2_27/src/init.cc:1599:    comm->slabAllocator = std::make_unique<ncclx::memory::SlabAllocator>();
+comms/ncclx/v2_27/src/init.cc:1602:      ncclx::getChannelMetadataLoc() == NCCL_CHANNEL_METADATA_LOCATION::host;
+comms/ncclx/v2_27/src/init.cc:1611:    comm->memCache = ncclx::memory::memCacheAllocator::getInstance();
+comms/ncclx/v2_27/src/init.cc:1627:   * NCCLX - Specific Initialization
+comms/ncclx/v2_27/src/init.cc:1629:  NCCLCHECKGOTO(meta::comms::ncclx::newCollTraceInit(comm), res, fail);
+comms/ncclx/v2_27/src/init.cc:1631:  // TODO: remove all ncclx fields and leave only ctranComm_
+comms/ncclx/v2_27/src/init.cc:1644:  comm->ctranComm_->bootstrap_ = std::make_unique<ncclx::BaselineBootstrap>(comm);
+comms/ncclx/v2_27/src/init.cc:1646:  comm->ctranComm_->statex_ = ncclx::createCommStateXFromNcclComm(comm);
+comms/ncclx/v2_27/src/init.cc:1651:  NCCLCHECKGOTO(ncclx::colltrace::collTraceInit(comm), res, fail);
+comms/ncclx/v2_27/src/init.cc:1656:      metaCommToNccl(ncclx::transport::tranportProxyInit(comm, job->parent)),
+comms/ncclx/v2_27/src/init.cc:1662:    NCCLCHECK(ncclx::initCtranCommStatexFromNcclComm(comm, comm->ctranComm_.get()));
+comms/ncclx/v2_27/src/init.cc:1670:  ncclx::comms_monitor::CommsMonitor::registerComm(comm);
+comms/ncclx/v2_27/src/init.cc:1829:static void ncclxCopyCommConfig(ncclComm_t childComm, ncclComm_t parnet) {
+comms/ncclx/v2_27/src/init.cc:1837:  ncclxCopyCommConfig(childComm, parnet);
+comms/ncclx/v2_27/src/init.cc:1842:static void ncclxParseCommConfig(
+comms/ncclx/v2_27/src/init.cc:2028:  ncclxParseCommConfig(internalConfigPtr, comm);
+comms/ncclx/v2_27/src/init.cc:2044:static std::mutex ncclxCommWorldMutex; // used by meta-ncclx to set NCCL_FIRST_COMM_AS_WORLD
+comms/ncclx/v2_27/src/init.cc:2045:static void ncclxSetFirstCommAsWorld(ncclComm_t* newcomm) {
+comms/ncclx/v2_27/src/init.cc:2047:    ncclxCommWorldMutex.lock();
+comms/ncclx/v2_27/src/init.cc:2052:    ncclxCommWorldMutex.unlock();
+comms/ncclx/v2_27/src/init.cc:2100:  comm->useCtran_ = ncclx::commUseCtran();
+comms/ncclx/v2_27/src/init.cc:2103:       comm->useCtran_, ncclx::getCommUseCtranConfig().c_str());
+comms/ncclx/v2_27/src/init.cc:2139:  ncclxSetFirstCommAsWorld(newcomm); // (meta-ncclx) set NCCL_COMM_WORLD
+comms/ncclx/v2_27/src/init.cc:2364:   * NCCLX - Resource Cleanup
+comms/ncclx/v2_27/src/init.cc:2367:  NCCLCHECKGOTO(ncclx::colltrace::collTraceDestroy(comm), ret, fail);
+comms/ncclx/v2_27/src/init.cc:2368:  NCCLCHECKGOTO(meta::comms::ncclx::newCollTraceDestroy(comm), ret, fail);
+comms/ncclx/v2_27/src/init.cc:2441:  ncclx::comms_monitor::CommsMonitor::deregisterComm(comm);
+comms/ncclx/v2_27/src/init.cc:2544:  ncclx::comms_monitor::CommsMonitor::deregisterComm(comm);
+comms/ncclx/v2_27/src/init.cc:2620:  // NCCLX - Force abort logic.
+comms/ncclx/v2_27/src/init.cc:2644:  ncclx::comms_monitor::CommsMonitor::deregisterComm(comm);
+comms/ncclx/v2_27/src/init.cc:2744:    childComm->useCtran_ = ncclx::commUseCtran();
+comms/ncclx/v2_27/src/init.cc:2747:        childComm->useCtran_, ncclx::getCommUseCtranConfig().c_str());
+comms/ncclx/v2_27/meta/tcpstore/TCPSocket.h:12:namespace ncclx::tcpstore::detail {
+comms/ncclx/v2_27/meta/tcpstore/TCPSocket.h:52:      std::make_shared<ncclx::tcpstore::FixedBackoff>(
+comms/ncclx/v2_27/meta/tcpstore/TCPSocket.h:91:} // namespace ncclx::tcpstore::detail
+comms/ncclx/v2_27/meta/algos/Algos.h:8:namespace ncclx::algos {
+comms/ncclx/v2_27/meta/algos/Algos.h:15:} // namespace ncclx::algos
+comms/ncclx/v2_27/meta/tcpstore/TCPStore.h:12:namespace ncclx::tcpstore {
+comms/ncclx/v2_27/meta/tcpstore/TCPStore.h:124:} // namespace ncclx::tcpstore
+comms/ncclx/v2_27/src/group.cc:145:    NCCLCHECK(ncclx::setupChannels(comm, comm->planner.nMaxChannelsNeedInit));
+comms/ncclx/v2_27/src/group.cc:165:    NCCLCHECKGOTO(ncclx::setupChannels(comm, comm->planner.nMaxChannelsNeedInit), ret, fail);
+comms/ncclx/v2_27/src/group.cc:494:      if (ncclx::transport::useTransportProxy(comm)) {
+comms/ncclx/v2_27/src/group.cc:519:  // If ncclx transport proxy thread is enabled, wait for p2p preconnect to finish
+comms/ncclx/v2_27/src/group.cc:521:      ncclx::transport::useTransportProxy(groupCommPreconnectHeadMain)) {
+comms/ncclx/v2_27/src/group.cc:581:          if (ncclx::transport::useTransportProxy(comm)) {
+comms/ncclx/v2_27/src/group.cc:610:      // If ncclx transport proxy thread is enabled, wait for coll preconnect to finish
+comms/ncclx/v2_27/src/group.cc:613:        if (ncclx::transport::useTransportProxy(comm)) { 
+comms/ncclx/v2_27/src/include/proxy.h:90:  // NCCLX - ProxyTrace
+comms/ncclx/v2_27/src/include/proxy.h:145:  // NCCLX - ProxyTrace
+comms/ncclx/v2_27/src/include/proxy.h:341:  // NCCLX - ProxyTrace
+comms/ncclx/v2_27/meta/tcpstore/Backoff.cc:5:namespace ncclx::tcpstore {
+comms/ncclx/v2_27/meta/tcpstore/Backoff.cc:71:} // namespace ncclx::tcpstore
+comms/ncclx/v2_27/src/include/comm.h:29:// Forward declarations of ncclx classes to avoid circular dependencies
+comms/ncclx/v2_27/src/include/comm.h:35:namespace ncclx {
+comms/ncclx/v2_27/src/include/comm.h:37:} // namespace ncclx
+comms/ncclx/v2_27/src/include/comm.h:38:namespace ncclx::transport {
+comms/ncclx/v2_27/src/include/comm.h:40:} // namespace ncclx::transport
+comms/ncclx/v2_27/src/include/comm.h:486:  // NCCLX supports storing channel metadata on the pinned host memory
+comms/ncclx/v2_27/src/include/comm.h:499:  std::unique_ptr<ncclx::memory::SlabAllocator> slabAllocator{nullptr};
+comms/ncclx/v2_27/src/include/comm.h:692:   * NCCLX specific state

@@ -1,0 +1,50 @@
+thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in:24:NCCL_MAJOR=${nccl:Major}
+thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in:25:NCCL_MINOR=${nccl:Minor}
+thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in:26:NCCL_PATCH=${nccl:Patch}
+thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in:27:NCCL_SUFFIX=${nccl:Suffix}
+thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in:28:NCCL_BUILD=${pkg:Revision}
+thirdparty/nccl/CMakeLists.txt:15:    NCCL_USE_CMAKE
+thirdparty/nccl/CMakeLists.txt:16:    NCCL_MAJOR=${NCCL_MAJOR}
+thirdparty/nccl/CMakeLists.txt:17:    NCCL_MINOR=${NCCL_MINOR}
+thirdparty/nccl/CMakeLists.txt:18:    NCCL_PATCH=${NCCL_PATCH}
+thirdparty/nccl/CMakeLists.txt:19:    NCCL_VERSION_CODE=${NCCL_VERSION_CODE}
+thirdparty/nccl/makefiles/version.mk:2:NCCL_MAJOR   := 2
+thirdparty/nccl/makefiles/version.mk:3:NCCL_MINOR   := 28
+thirdparty/nccl/makefiles/version.mk:4:NCCL_PATCH   := 7
+thirdparty/nccl/makefiles/version.mk:5:NCCL_SUFFIX  :=
+thirdparty/nccl/pkg/txz/create_txz.sh.in:13:NCCL_MAJOR=${nccl:Major}
+thirdparty/nccl/pkg/txz/create_txz.sh.in:14:NCCL_MINOR=${nccl:Minor}
+thirdparty/nccl/pkg/txz/create_txz.sh.in:15:NCCL_PATCH=${nccl:Patch}
+thirdparty/nccl/pkg/txz/create_txz.sh.in:16:NCCL_SUFFIX=${nccl:Suffix}
+thirdparty/nccl/examples/01_communicators/01_multiple_devices_single_process/README.md:62:NCCL_DEBUG=INFO ./multiple_devices_single_process
+thirdparty/nccl/src/debug.cc:417:NCCL_PARAM(SetThreadName, "SET_THREAD_NAME", 0);
+thirdparty/nccl/examples/01_communicators/02_one_device_per_pthread/README.md:49:NCCL_DEBUG=INFO ./one_device_per_pthread
+thirdparty/nccl/src/collectives.cc:80:NCCL_API(ncclResult_t, ncclAllGather, const void* sendbuff, void* recvbuff, size_t sendcount,
+thirdparty/nccl/src/collectives.cc:94:NCCL_API(ncclResult_t, ncclAlltoAll, const void* sendbuff, void* recvbuff, size_t count,
+thirdparty/nccl/src/collectives.cc:107:NCCL_API(ncclResult_t, ncclAllReduce, const void* sendbuff, void* recvbuff, size_t count,
+thirdparty/nccl/src/collectives.cc:120:NCCL_API(ncclResult_t, ncclBroadcast, const void* sendbuff, void* recvbuff, size_t count, ncclDataType_t datatype, int root,
+thirdparty/nccl/src/collectives.cc:133:NCCL_API(ncclResult_t, ncclBcast, void* buff, size_t count, ncclDataType_t datatype, int root,
+thirdparty/nccl/src/collectives.cc:140:NCCL_API(ncclResult_t, ncclGather, const void* sendbuff, void* recvbuff, size_t count, ncclDataType_t datatype, int root,
+thirdparty/nccl/src/collectives.cc:153:NCCL_API(ncclResult_t, ncclReduce, const void* sendbuff, void* recvbuff, size_t count,
+thirdparty/nccl/src/collectives.cc:166:NCCL_API(ncclResult_t, ncclReduceScatter, const void* sendbuff, void* recvbuff, size_t recvcount,
+thirdparty/nccl/src/collectives.cc:179:NCCL_API(ncclResult_t, ncclScatter, const void* sendbuff, void* recvbuff, size_t count,
+thirdparty/nccl/src/collectives.cc:192:NCCL_API(ncclResult_t, ncclSend, const void* sendbuff, size_t count, ncclDataType_t datatype, int peer,
+thirdparty/nccl/src/collectives.cc:205:NCCL_API(ncclResult_t, ncclRecv, void* recvbuff, size_t count, ncclDataType_t datatype, int peer,
+thirdparty/nccl/examples/common/src/utils.cc:124:    nccl_unique_id = *arg;
+thirdparty/nccl/src/init_nvtx.cc:19:NCCL_PARAM(NvtxDisable, "NVTX_DISABLE", 0);
+thirdparty/nccl/examples/01_communicators/03_one_device_per_process_mpi/README.md:58:NCCL_DEBUG=INFO mpirun -np <num_processes> ./one_device_per_process_mpi
+thirdparty/nccl/ext-tuner/example/test/Makefile:24:	NCCL_DEBUG=INFO ./$(TARGET) $(TEST_CASE)
+thirdparty/nccl/src/misc/cudawrap.cc:15:NCCL_PARAM(CuMemEnable, "CUMEM_ENABLE", -2);
+thirdparty/nccl/src/misc/cudawrap.cc:16:NCCL_PARAM(CuMemHostEnable, "CUMEM_HOST_ENABLE", -1);
+thirdparty/nccl/src/init.cc:53:NCCL_PARAM(GroupCudaStream, "GROUP_CUDA_STREAM", NCCL_GROUP_CUDA_STREAM);
+thirdparty/nccl/src/init.cc:55:NCCL_PARAM(CheckPointers, "CHECK_POINTERS", 0);
+thirdparty/nccl/src/init.cc:56:NCCL_PARAM(CommBlocking, "COMM_BLOCKING", NCCL_CONFIG_UNDEF_INT);
+thirdparty/nccl/src/init.cc:57:NCCL_PARAM(RuntimeConnect, "RUNTIME_CONNECT", 1);
+thirdparty/nccl/src/init.cc:58:NCCL_PARAM(WinEnable, "WIN_ENABLE", 1);
+thirdparty/nccl/src/init.cc:59:NCCL_PARAM(CollnetEnable, "COLLNET_ENABLE", NCCL_CONFIG_UNDEF_INT);
+thirdparty/nccl/src/init.cc:60:NCCL_PARAM(CtaPolicy, "CTA_POLICY", NCCL_CONFIG_UNDEF_INT);
+thirdparty/nccl/src/init.cc:61:NCCL_PARAM(NvlsChannels, "NVLS_NCHANNELS", NCCL_CONFIG_UNDEF_INT);
+thirdparty/nccl/src/init.cc:62:NCCL_PARAM(SetCpuStackSize, "SET_CPU_STACK_SIZE", 1);
+thirdparty/nccl/src/init.cc:69:NCCL_PARAM(GdrCopyEnable, "GDRCOPY_ENABLE", 0);
+thirdparty/nccl/src/init.cc:150:NCCL_API(ncclResult_t, ncclGetVersion, int* version);
+thirdparty/nccl/src/init.cc:157:NCCL_API(ncclResult_t, ncclGetUniqueId, ncclUniqueId* out);
