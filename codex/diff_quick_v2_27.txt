@@ -1,0 +1,244 @@
+Only in thirdparty/nccl: .git
+Only in thirdparty/nccl: .github
+Only in thirdparty/nccl: CMakeLists.txt
+Files thirdparty/nccl/Makefile and comms/ncclx/v2_27/Makefile differ
+Only in thirdparty/nccl/examples: 01_communicators
+Only in thirdparty/nccl/examples: 02_point_to_point
+Only in thirdparty/nccl/examples: 03_collectives
+Only in thirdparty/nccl/examples: 04_user_buffer_registration
+Only in thirdparty/nccl/examples: 05_symmetric_memory
+Only in thirdparty/nccl/examples: 06_device_api
+Only in comms/ncclx/v2_27/examples: HelloWorld.cc
+Files thirdparty/nccl/examples/Makefile and comms/ncclx/v2_27/examples/Makefile differ
+Only in thirdparty/nccl/examples: README.md
+Only in thirdparty/nccl/examples: common
+Only in comms/ncclx/v2_27/examples: trainer_context.py
+Only in comms/ncclx/v2_27/examples: utils.h
+Only in thirdparty/nccl/ext-net: CMakeLists.txt
+Files thirdparty/nccl/ext-net/README.md and comms/ncclx/v2_27/ext-net/README.md differ
+Only in thirdparty/nccl/ext-net/example: CMakeLists.txt
+Files thirdparty/nccl/ext-net/example/nccl/net.h and comms/ncclx/v2_27/ext-net/example/nccl/net.h differ
+Files thirdparty/nccl/ext-net/example/nccl/net_device.h and comms/ncclx/v2_27/ext-net/example/nccl/net_device.h differ
+Files thirdparty/nccl/ext-net/example/nccl/net_v10.h and comms/ncclx/v2_27/ext-net/example/nccl/net_v10.h differ
+Only in thirdparty/nccl/ext-net/example/nccl: net_v11.h
+Files thirdparty/nccl/ext-net/example/nccl/net_v9.h and comms/ncclx/v2_27/ext-net/example/nccl/net_v9.h differ
+Files thirdparty/nccl/ext-net/example/plugin.c and comms/ncclx/v2_27/ext-net/example/plugin.c differ
+Files thirdparty/nccl/ext-profiler/README.md and comms/ncclx/v2_27/ext-profiler/README.md differ
+Only in thirdparty/nccl/ext-profiler/example: CMakeLists.txt
+Files thirdparty/nccl/ext-profiler/example/Makefile and comms/ncclx/v2_27/ext-profiler/example/Makefile differ
+Files thirdparty/nccl/ext-profiler/example/README.md and comms/ncclx/v2_27/ext-profiler/example/README.md differ
+Only in comms/ncclx/v2_27/ext-profiler/example: event.c
+Files thirdparty/nccl/ext-profiler/example/event.h and comms/ncclx/v2_27/ext-profiler/example/event.h differ
+Files thirdparty/nccl/ext-profiler/example/nccl/profiler.h and comms/ncclx/v2_27/ext-profiler/example/nccl/profiler.h differ
+Only in thirdparty/nccl/ext-profiler/example/nccl: profiler_v5.h
+Only in comms/ncclx/v2_27/ext-profiler/example: plugin.c
+Only in thirdparty/nccl/ext-profiler/example: plugin.cc
+Files thirdparty/nccl/ext-profiler/example/plugin.h and comms/ncclx/v2_27/ext-profiler/example/plugin.h differ
+Only in comms/ncclx/v2_27/ext-profiler/example: print_event.c
+Only in thirdparty/nccl/ext-profiler/example: print_event.cc
+Only in thirdparty/nccl/ext-profiler/example: queue.h
+Only in thirdparty/nccl/ext-profiler: google-CoMMA
+Only in thirdparty/nccl/ext-profiler: inspector
+Only in thirdparty/nccl/ext-tuner: README.md
+Only in thirdparty/nccl/ext-tuner/basic: README.md
+Only in thirdparty/nccl/ext-tuner/example: .gitignore
+Only in thirdparty/nccl/ext-tuner/example: CMakeLists.txt
+Files thirdparty/nccl/ext-tuner/example/README.md and comms/ncclx/v2_27/ext-tuner/example/README.md differ
+Files thirdparty/nccl/ext-tuner/example/nccl/tuner.h and comms/ncclx/v2_27/ext-tuner/example/nccl/tuner.h differ
+Files thirdparty/nccl/ext-tuner/example/plugin.c and comms/ncclx/v2_27/ext-tuner/example/plugin.c differ
+Only in thirdparty/nccl/ext-tuner/example/scripts: sample_performance_data.csv
+Files thirdparty/nccl/ext-tuner/example/test/test_plugin.c and comms/ncclx/v2_27/ext-tuner/example/test/test_plugin.c differ
+Only in comms/ncclx/v2_27: maint
+Files thirdparty/nccl/makefiles/common.mk and comms/ncclx/v2_27/makefiles/common.mk differ
+Only in thirdparty/nccl/makefiles: examples.mk
+Files thirdparty/nccl/makefiles/version.mk and comms/ncclx/v2_27/makefiles/version.mk differ
+Only in comms/ncclx/v2_27: meta
+Files thirdparty/nccl/pkg/Makefile and comms/ncclx/v2_27/pkg/Makefile differ
+Files thirdparty/nccl/pkg/debian/libnccl-dev.install.in and comms/ncclx/v2_27/pkg/debian/libnccl-dev.install.in differ
+Files thirdparty/nccl/pkg/redhat/nccl.spec.in and comms/ncclx/v2_27/pkg/redhat/nccl.spec.in differ
+Files thirdparty/nccl/pkg/srctxz/Makefile and comms/ncclx/v2_27/pkg/srctxz/Makefile differ
+Files thirdparty/nccl/pkg/srctxz/create_srctxz.sh.in and comms/ncclx/v2_27/pkg/srctxz/create_srctxz.sh.in differ
+Only in comms/ncclx/v2_27: setup.py
+Only in thirdparty/nccl/src: CMakeLists.txt
+Files thirdparty/nccl/src/Makefile and comms/ncclx/v2_27/src/Makefile differ
+Files thirdparty/nccl/src/allocator.cc and comms/ncclx/v2_27/src/allocator.cc differ
+Files thirdparty/nccl/src/bootstrap.cc and comms/ncclx/v2_27/src/bootstrap.cc differ
+Only in thirdparty/nccl/src: ce_coll.cc
+Files thirdparty/nccl/src/channel.cc and comms/ncclx/v2_27/src/channel.cc differ
+Files thirdparty/nccl/src/collectives.cc and comms/ncclx/v2_27/src/collectives.cc differ
+Files thirdparty/nccl/src/debug.cc and comms/ncclx/v2_27/src/debug.cc differ
+Only in thirdparty/nccl/src: dev_runtime.cc
+Only in thirdparty/nccl/src/device: CMakeLists.txt
+Files thirdparty/nccl/src/device/Makefile and comms/ncclx/v2_27/src/device/Makefile differ
+Only in comms/ncclx/v2_27/src/device: all_reduce_sparse_block.cu
+Only in comms/ncclx/v2_27/src/device: all_reduce_sparse_block.cuh
+Files thirdparty/nccl/src/device/common.h and comms/ncclx/v2_27/src/device/common.h differ
+Files thirdparty/nccl/src/device/generate.py and comms/ncclx/v2_27/src/device/generate.py differ
+Files thirdparty/nccl/src/device/network/unpack/unpack.h and comms/ncclx/v2_27/src/device/network/unpack/unpack.h differ
+Files thirdparty/nccl/src/device/onerank.cu and comms/ncclx/v2_27/src/device/onerank.cu differ
+Files thirdparty/nccl/src/device/prims_ll.h and comms/ncclx/v2_27/src/device/prims_ll.h differ
+Files thirdparty/nccl/src/device/prims_ll128.h and comms/ncclx/v2_27/src/device/prims_ll128.h differ
+Files thirdparty/nccl/src/device/reduce_kernel.h and comms/ncclx/v2_27/src/device/reduce_kernel.h differ
+Files thirdparty/nccl/src/device/sendrecv.h and comms/ncclx/v2_27/src/device/sendrecv.h differ
+Files thirdparty/nccl/src/device/symmetric/all_gather.cuh and comms/ncclx/v2_27/src/device/symmetric/all_gather.cuh differ
+Files thirdparty/nccl/src/device/symmetric/all_reduce.cuh and comms/ncclx/v2_27/src/device/symmetric/all_reduce.cuh differ
+Files thirdparty/nccl/src/device/symmetric/generate.py and comms/ncclx/v2_27/src/device/symmetric/generate.py differ
+Files thirdparty/nccl/src/device/symmetric/kernel.cuh and comms/ncclx/v2_27/src/device/symmetric/kernel.cuh differ
+Files thirdparty/nccl/src/device/symmetric/primitives.cuh and comms/ncclx/v2_27/src/device/symmetric/primitives.cuh differ
+Files thirdparty/nccl/src/device/symmetric/reduce_scatter.cuh and comms/ncclx/v2_27/src/device/symmetric/reduce_scatter.cuh differ
+Only in thirdparty/nccl/src: enhcompat.cc
+Files thirdparty/nccl/src/enqueue.cc and comms/ncclx/v2_27/src/enqueue.cc differ
+Only in thirdparty/nccl/src: gin
+Only in thirdparty/nccl/src/graph: CMakeLists.txt
+Files thirdparty/nccl/src/graph/connect.cc and comms/ncclx/v2_27/src/graph/connect.cc differ
+Files thirdparty/nccl/src/graph/paths.cc and comms/ncclx/v2_27/src/graph/paths.cc differ
+Files thirdparty/nccl/src/graph/rings.cc and comms/ncclx/v2_27/src/graph/rings.cc differ
+Files thirdparty/nccl/src/graph/rings.h and comms/ncclx/v2_27/src/graph/rings.h differ
+Files thirdparty/nccl/src/graph/search.cc and comms/ncclx/v2_27/src/graph/search.cc differ
+Files thirdparty/nccl/src/graph/topo.cc and comms/ncclx/v2_27/src/graph/topo.cc differ
+Files thirdparty/nccl/src/graph/topo.h and comms/ncclx/v2_27/src/graph/topo.h differ
+Files thirdparty/nccl/src/graph/tuning.cc and comms/ncclx/v2_27/src/graph/tuning.cc differ
+Files thirdparty/nccl/src/graph/xml.cc and comms/ncclx/v2_27/src/graph/xml.cc differ
+Files thirdparty/nccl/src/graph/xml.h and comms/ncclx/v2_27/src/graph/xml.h differ
+Files thirdparty/nccl/src/group.cc and comms/ncclx/v2_27/src/group.cc differ
+Files thirdparty/nccl/src/include/alloc.h and comms/ncclx/v2_27/src/include/alloc.h differ
+Files thirdparty/nccl/src/include/allocator.h and comms/ncclx/v2_27/src/include/allocator.h differ
+Files thirdparty/nccl/src/include/bitops.h and comms/ncclx/v2_27/src/include/bitops.h differ
+Files thirdparty/nccl/src/include/bootstrap.h and comms/ncclx/v2_27/src/include/bootstrap.h differ
+Only in thirdparty/nccl/src/include: ce_coll.h
+Files thirdparty/nccl/src/include/channel.h and comms/ncclx/v2_27/src/include/channel.h differ
+Files thirdparty/nccl/src/include/checks.h and comms/ncclx/v2_27/src/include/checks.h differ
+Files thirdparty/nccl/src/include/coll_net.h and comms/ncclx/v2_27/src/include/coll_net.h differ
+Files thirdparty/nccl/src/include/collectives.h and comms/ncclx/v2_27/src/include/collectives.h differ
+Files thirdparty/nccl/src/include/comm.h and comms/ncclx/v2_27/src/include/comm.h differ
+Files thirdparty/nccl/src/include/core.h and comms/ncclx/v2_27/src/include/core.h differ
+Files thirdparty/nccl/src/include/cpuset.h and comms/ncclx/v2_27/src/include/cpuset.h differ
+Files thirdparty/nccl/src/include/cudawrap.h and comms/ncclx/v2_27/src/include/cudawrap.h differ
+Files thirdparty/nccl/src/include/debug.h and comms/ncclx/v2_27/src/include/debug.h differ
+Only in thirdparty/nccl/src/include: dev_runtime.h
+Files thirdparty/nccl/src/include/device.h and comms/ncclx/v2_27/src/include/device.h differ
+Only in thirdparty/nccl/src/include: env.h
+Files thirdparty/nccl/src/include/gdrwrap.h and comms/ncclx/v2_27/src/include/gdrwrap.h differ
+Only in thirdparty/nccl/src/include: gin
+Files thirdparty/nccl/src/include/graph.h and comms/ncclx/v2_27/src/include/graph.h differ
+Files thirdparty/nccl/src/include/group.h and comms/ncclx/v2_27/src/include/group.h differ
+Files thirdparty/nccl/src/include/ibvcore.h and comms/ncclx/v2_27/src/include/ibvcore.h differ
+Files thirdparty/nccl/src/include/ibvsymbols.h and comms/ncclx/v2_27/src/include/ibvsymbols.h differ
+Files thirdparty/nccl/src/include/ibvwrap.h and comms/ncclx/v2_27/src/include/ibvwrap.h differ
+Files thirdparty/nccl/src/include/info.h and comms/ncclx/v2_27/src/include/info.h differ
+Only in comms/ncclx/v2_27/src/include: nccl.h
+Files thirdparty/nccl/src/include/nccl_common.h and comms/ncclx/v2_27/src/include/nccl_common.h differ
+Only in thirdparty/nccl/src/include: nccl_device
+Only in thirdparty/nccl/src/include: nccl_device.h
+Files thirdparty/nccl/src/include/net.h and comms/ncclx/v2_27/src/include/net.h differ
+Only in comms/ncclx/v2_27/src/include: net_device.h
+Files thirdparty/nccl/src/include/nvmlwrap.h and comms/ncclx/v2_27/src/include/nvmlwrap.h differ
+Files thirdparty/nccl/src/include/nvtx.h and comms/ncclx/v2_27/src/include/nvtx.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvToolsExtCounters.h and comms/ncclx/v2_27/src/include/nvtx3/nvToolsExtCounters.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvToolsExtSemanticsCounters.h and comms/ncclx/v2_27/src/include/nvtx3/nvToolsExtSemanticsCounters.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvToolsExtSemanticsScope.h and comms/ncclx/v2_27/src/include/nvtx3/nvToolsExtSemanticsScope.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtHelperMacros.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtHelperMacros.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtImpl.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtImpl.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtImplCounters_v1.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtImplCounters_v1.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtPayloadHelperInternal.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtPayloadHelperInternal.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtPayloadTypeInfo.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtPayloadTypeInfo.h differ
+Files thirdparty/nccl/src/include/nvtx3/nvtxDetail/nvtxExtTypes.h and comms/ncclx/v2_27/src/include/nvtx3/nvtxDetail/nvtxExtTypes.h differ
+Files thirdparty/nccl/src/include/nvtx_payload_schemas.h and comms/ncclx/v2_27/src/include/nvtx_payload_schemas.h differ
+Files thirdparty/nccl/src/include/p2p.h and comms/ncclx/v2_27/src/include/p2p.h differ
+Files thirdparty/nccl/src/include/param.h and comms/ncclx/v2_27/src/include/param.h differ
+Only in thirdparty/nccl/src/include/plugin: env
+Only in thirdparty/nccl/src/include/plugin: nccl_env.h
+Files thirdparty/nccl/src/include/plugin/nccl_net.h and comms/ncclx/v2_27/src/include/plugin/nccl_net.h differ
+Files thirdparty/nccl/src/include/plugin/nccl_profiler.h and comms/ncclx/v2_27/src/include/plugin/nccl_profiler.h differ
+Files thirdparty/nccl/src/include/plugin/nccl_tuner.h and comms/ncclx/v2_27/src/include/plugin/nccl_tuner.h differ
+Files thirdparty/nccl/src/include/plugin/net/net_v10.h and comms/ncclx/v2_27/src/include/plugin/net/net_v10.h differ
+Only in thirdparty/nccl/src/include/plugin/net: net_v11.h
+Files thirdparty/nccl/src/include/plugin/net/net_v9.h and comms/ncclx/v2_27/src/include/plugin/net/net_v9.h differ
+Files thirdparty/nccl/src/include/plugin/plugin.h and comms/ncclx/v2_27/src/include/plugin/plugin.h differ
+Only in thirdparty/nccl/src/include/plugin/profiler: profiler_v5.h
+Only in thirdparty/nccl/src/include/plugin/tuner: tuner_v5.h
+Files thirdparty/nccl/src/include/profiler.h and comms/ncclx/v2_27/src/include/profiler.h differ
+Files thirdparty/nccl/src/include/proxy.h and comms/ncclx/v2_27/src/include/proxy.h differ
+Files thirdparty/nccl/src/include/register.h and comms/ncclx/v2_27/src/include/register.h differ
+Files thirdparty/nccl/src/include/register_inline.h and comms/ncclx/v2_27/src/include/register_inline.h differ
+Only in thirdparty/nccl/src/include: scheduler.h
+Files thirdparty/nccl/src/include/shm.h and comms/ncclx/v2_27/src/include/shm.h differ
+Files thirdparty/nccl/src/include/shmutils.h and comms/ncclx/v2_27/src/include/shmutils.h differ
+Files thirdparty/nccl/src/include/socket.h and comms/ncclx/v2_27/src/include/socket.h differ
+Only in thirdparty/nccl/src/include: sym_kernels.h
+Only in comms/ncclx/v2_27/src/include: symmetric.h
+Files thirdparty/nccl/src/include/transport.h and comms/ncclx/v2_27/src/include/transport.h differ
+Files thirdparty/nccl/src/include/utils.h and comms/ncclx/v2_27/src/include/utils.h differ
+Files thirdparty/nccl/src/init.cc and comms/ncclx/v2_27/src/init.cc differ
+Files thirdparty/nccl/src/init_nvtx.cc and comms/ncclx/v2_27/src/init_nvtx.cc differ
+Only in thirdparty/nccl/src: libnccl.map
+Only in thirdparty/nccl/src/misc: CMakeLists.txt
+Files thirdparty/nccl/src/misc/cudawrap.cc and comms/ncclx/v2_27/src/misc/cudawrap.cc differ
+Files thirdparty/nccl/src/misc/gdrwrap.cc and comms/ncclx/v2_27/src/misc/gdrwrap.cc differ
+Files thirdparty/nccl/src/misc/ibvsymbols.cc and comms/ncclx/v2_27/src/misc/ibvsymbols.cc differ
+Files thirdparty/nccl/src/misc/ibvwrap.cc and comms/ncclx/v2_27/src/misc/ibvwrap.cc differ
+Files thirdparty/nccl/src/misc/mlx5dvwrap.cc and comms/ncclx/v2_27/src/misc/mlx5dvwrap.cc differ
+Files thirdparty/nccl/src/misc/nvmlwrap.cc and comms/ncclx/v2_27/src/misc/nvmlwrap.cc differ
+Files thirdparty/nccl/src/misc/param.cc and comms/ncclx/v2_27/src/misc/param.cc differ
+Files thirdparty/nccl/src/misc/shmutils.cc and comms/ncclx/v2_27/src/misc/shmutils.cc differ
+Files thirdparty/nccl/src/misc/socket.cc and comms/ncclx/v2_27/src/misc/socket.cc differ
+Files thirdparty/nccl/src/misc/strongstream.cc and comms/ncclx/v2_27/src/misc/strongstream.cc differ
+Files thirdparty/nccl/src/misc/utils.cc and comms/ncclx/v2_27/src/misc/utils.cc differ
+Files thirdparty/nccl/src/mnnvl.cc and comms/ncclx/v2_27/src/mnnvl.cc differ
+Files thirdparty/nccl/src/nccl.h.in and comms/ncclx/v2_27/src/nccl.h.in differ
+Only in thirdparty/nccl/src: nccl_device
+Only in thirdparty/nccl/src/plugin: CMakeLists.txt
+Only in thirdparty/nccl/src/plugin: env
+Only in thirdparty/nccl/src/plugin: env.cc
+Only in thirdparty/nccl/src/plugin/net: CMakeLists.txt
+Files thirdparty/nccl/src/plugin/net/net_v10.cc and comms/ncclx/v2_27/src/plugin/net/net_v10.cc differ
+Only in thirdparty/nccl/src/plugin/net: net_v11.cc
+Files thirdparty/nccl/src/plugin/net/net_v6.cc and comms/ncclx/v2_27/src/plugin/net/net_v6.cc differ
+Files thirdparty/nccl/src/plugin/net/net_v7.cc and comms/ncclx/v2_27/src/plugin/net/net_v7.cc differ
+Files thirdparty/nccl/src/plugin/net/net_v8.cc and comms/ncclx/v2_27/src/plugin/net/net_v8.cc differ
+Files thirdparty/nccl/src/plugin/net/net_v9.cc and comms/ncclx/v2_27/src/plugin/net/net_v9.cc differ
+Files thirdparty/nccl/src/plugin/net.cc and comms/ncclx/v2_27/src/plugin/net.cc differ
+Files thirdparty/nccl/src/plugin/plugin_open.cc and comms/ncclx/v2_27/src/plugin/plugin_open.cc differ
+Only in thirdparty/nccl/src/plugin/profiler: CMakeLists.txt
+Files thirdparty/nccl/src/plugin/profiler/profiler_v1.cc and comms/ncclx/v2_27/src/plugin/profiler/profiler_v1.cc differ
+Files thirdparty/nccl/src/plugin/profiler/profiler_v2.cc and comms/ncclx/v2_27/src/plugin/profiler/profiler_v2.cc differ
+Files thirdparty/nccl/src/plugin/profiler/profiler_v3.cc and comms/ncclx/v2_27/src/plugin/profiler/profiler_v3.cc differ
+Files thirdparty/nccl/src/plugin/profiler/profiler_v4.cc and comms/ncclx/v2_27/src/plugin/profiler/profiler_v4.cc differ
+Only in thirdparty/nccl/src/plugin/profiler: profiler_v5.cc
+Files thirdparty/nccl/src/plugin/profiler.cc and comms/ncclx/v2_27/src/plugin/profiler.cc differ
+Only in thirdparty/nccl/src/plugin/tuner: CMakeLists.txt
+Files thirdparty/nccl/src/plugin/tuner/tuner_v2.cc and comms/ncclx/v2_27/src/plugin/tuner/tuner_v2.cc differ
+Files thirdparty/nccl/src/plugin/tuner/tuner_v3.cc and comms/ncclx/v2_27/src/plugin/tuner/tuner_v3.cc differ
+Files thirdparty/nccl/src/plugin/tuner/tuner_v4.cc and comms/ncclx/v2_27/src/plugin/tuner/tuner_v4.cc differ
+Only in thirdparty/nccl/src/plugin/tuner: tuner_v5.cc
+Files thirdparty/nccl/src/plugin/tuner.cc and comms/ncclx/v2_27/src/plugin/tuner.cc differ
+Files thirdparty/nccl/src/proxy.cc and comms/ncclx/v2_27/src/proxy.cc differ
+Only in thirdparty/nccl/src/ras: CMakeLists.txt
+Files thirdparty/nccl/src/ras/client.cc and comms/ncclx/v2_27/src/ras/client.cc differ
+Files thirdparty/nccl/src/ras/client_support.cc and comms/ncclx/v2_27/src/ras/client_support.cc differ
+Files thirdparty/nccl/src/ras/collectives.cc and comms/ncclx/v2_27/src/ras/collectives.cc differ
+Files thirdparty/nccl/src/ras/peers.cc and comms/ncclx/v2_27/src/ras/peers.cc differ
+Files thirdparty/nccl/src/ras/ras.cc and comms/ncclx/v2_27/src/ras/ras.cc differ
+Files thirdparty/nccl/src/ras/ras_internal.h and comms/ncclx/v2_27/src/ras/ras_internal.h differ
+Files thirdparty/nccl/src/ras/rasnet.cc and comms/ncclx/v2_27/src/ras/rasnet.cc differ
+Only in thirdparty/nccl/src/register: CMakeLists.txt
+Files thirdparty/nccl/src/register/coll_reg.cc and comms/ncclx/v2_27/src/register/coll_reg.cc differ
+Files thirdparty/nccl/src/register/register.cc and comms/ncclx/v2_27/src/register/register.cc differ
+Files thirdparty/nccl/src/register/sendrecv_reg.cc and comms/ncclx/v2_27/src/register/sendrecv_reg.cc differ
+Only in thirdparty/nccl/src: scheduler
+Only in thirdparty/nccl/src: sym_kernels.cc
+Only in comms/ncclx/v2_27/src: symmetric.cc
+Only in thirdparty/nccl/src/transport: CMakeLists.txt
+Files thirdparty/nccl/src/transport/coll_net.cc and comms/ncclx/v2_27/src/transport/coll_net.cc differ
+Only in thirdparty/nccl/src/transport: gdaki
+Files thirdparty/nccl/src/transport/generic.cc and comms/ncclx/v2_27/src/transport/generic.cc differ
+Files thirdparty/nccl/src/transport/net.cc and comms/ncclx/v2_27/src/transport/net.cc differ
+Files thirdparty/nccl/src/transport/net_ib.cc and comms/ncclx/v2_27/src/transport/net_ib.cc differ
+Only in thirdparty/nccl/src/transport: net_ib_gin.h
+Files thirdparty/nccl/src/transport/net_socket.cc and comms/ncclx/v2_27/src/transport/net_socket.cc differ
+Files thirdparty/nccl/src/transport/nvls.cc and comms/ncclx/v2_27/src/transport/nvls.cc differ
+Files thirdparty/nccl/src/transport/p2p.cc and comms/ncclx/v2_27/src/transport/p2p.cc differ
+Files thirdparty/nccl/src/transport/profiler.cc and comms/ncclx/v2_27/src/transport/profiler.cc differ
+Files thirdparty/nccl/src/transport/shm.cc and comms/ncclx/v2_27/src/transport/shm.cc differ
+Files thirdparty/nccl/src/transport.cc and comms/ncclx/v2_27/src/transport.cc differ
+Only in comms/ncclx/v2_27/src: version.script
