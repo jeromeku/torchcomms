@@ -2376,3 +2376,322 @@ In practice, the “best” all‑to‑all implementation depends on:
 - How much SM budget can be dedicated to communication vs compute.  
 - Whether you prefer host‑driven collectives (NCCL) or a GPU‑centric PGAS model (NVSHMEM).
 
+---
+
+### 7.6 Quantitative Comparison: NCCL CE AlltoAll vs NVSHMEM NVLS/Device AlltoAll
+
+This subsection zooms in on the **NCCL CE AlltoAll on symmetric windows** and the **NVSHMEM NVLS/Device all‑to‑all** paths, with simple quantitative models for latency, throughput, and SM usage. The goal is not absolute cycle‑accurate numbers but to make relative tradeoffs concrete.
+
+#### 7.6.1 Model assumptions
+
+We’ll use the following rough model:
+
+- `N` ranks (GPUs) in the communicator/team.  
+- Each rank participates in AlltoAll with `M` elements per peer of size `s` bytes.  
+  - Per‑peer payload: `M * s` bytes.  
+  - Per‑rank total sent bytes: `B_rank = N * M * s`.  
+  - System‑wide traffic (all sends) ~ `B_sys = N * B_rank = N² * M * s`.  
+- Peak **intra‑node NVLink bandwidth per GPU** ≈ `B_link` (e.g., 300–900 GB/s, hardware‑dependent).  
+- Effective sustainable bandwidth for the all‑to‑all pattern is some fraction `η ∈ (0,1)` of `B_link`, due to topology, protocol overhead, and contention.
+
+We’ll talk about **latency** (`T`) as:
+
+```text
+T ≈ T_setup + T_sync + B_rank / B_eff
+```
+
+where:
+
+- `T_setup` = per‑collective software overhead (enqueuing, building batch descriptors, launching kernels).  
+- `T_sync`   = cost of global synchronizations (`ncclMemOpSync`, device barriers).  
+- `B_eff`    = effective achieved bandwidth per GPU for the pattern (≤ `η * B_link`).
+
+#### 7.6.2 NCCL CE AlltoAll (symmetric windows)
+
+**Traffic pattern**
+
+From [`ncclCeAlltoAll`](../thirdparty/nccl/src/ce_coll.cc#L424), each rank:
+
+- Copies `chunkBytes = M * s` bytes to every destination rank (including itself).  
+- Via local copies for self, and `ncclDevrGetLsaRankPtr` + remote copies for peers.  
+
+So per rank:
+
+- Sent bytes: `B_rank = N * M * s`.  
+- Received bytes: also `B_rank` (ignoring local copy optimization).  
+
+**Latency model**
+
+Let:
+
+- `T_batch` = time for CE to execute a batch of `N` copies for a single rank.  
+- `T_memop_sync` = time for `ncclMemOpSync` to ensure all memops reach global visibility across ranks.
+
+Then for moderate/large `M`:
+
+```text
+T_CE_AlltoAll ≈ T_setup_CE + T_memop_sync_pre +
+                (B_rank / B_eff_CE) +
+                T_memop_sync_post
+```
+
+Qualitatively:
+
+- `T_setup_CE` is small: a single batch descriptor is built per rank, with `O(N)` entries.  
+- `T_memop_sync_*` introduces a fixed cost that grows slowly with `N` (due to control messages and fences).  
+- `B_eff_CE` approaches a large fraction of intra‑node NVLink bandwidth because:
+  - Copies are bulk transfers into symmetric windows with minimal protocol overhead.  
+  - CE can pipeline memops across links and ranks without spinning kernels on SMs.
+
+In practice:
+
+- For **large M** (tens of KB and up), the term `B_rank / B_eff_CE` dominates and CE AlltoAll can approach near‑peak NVLink utilization.  
+- For **small M**, `T_setup_CE + T_memop_sync_*` dominate, making CE less attractive compared to lighter‑weight device‑side primitives.
+
+**SM usage**
+
+- CE memops do not require long‑running compute kernels; the heavy lifting is done by:  
+  - GPU copy engines / NVLink hardware.  
+  - Device runtime for symmetric memory addressing.  
+- SM cycles are mostly consumed by user kernels; CE AlltoAll only uses SMs briefly for the minimal orchestration necessary to initiate memops.  
+
+**Scaling with N**
+
+- `B_rank` grows linearly in `N`.  
+- If the underlying topology is fully connected or fat‑tree and CE can pipeline copies well, `B_eff_CE` degrades slowly as `N` grows, until you saturate aggregate switch/bridge bandwidth.  
+- The global memop sync might add an `O(log N)` or `O(N)` factor depending on implementation, but its absolute cost is typically modest compared to data movement for large messages.
+
+**Best suited for:**
+
+- Medium to large messages (≥ ~64KB per peer, hardware‑ and topology‑dependent).  
+- Scenarios where symmetric windows are already set up (e.g., for symmetric kernels or RMA).  
+- Workloads that want to **minimize SM consumption** for communication and maximize SM availability for compute.
+
+#### 7.6.3 NVSHMEM NVLS P2P AlltoAll
+
+When the conditions `teami->are_gpus_p2p_connected`, `teami->nvls_rsc_base_ptr != NULL`, and `nvshmemi_can_use_cuda_64_bit_stream_memops` hold, NVSHMEM uses the NVLS P2P path ([`alltoall.h`](../thirdparty/nvshmem/src/host/coll/alltoall/alltoall.h#L50)):
+
+```cpp
+for (int i = 1; i <= teami->size; i++) {
+  int dst_pe = (teami->my_pe + i) % teami->size;
+  if (nvshmemi_disable_self_write_ce_coll && dst_pe == teami->my_pe)
+    continue;
+  CUDA_RUNTIME_CHECK(cudaMemcpyAsync(
+      nvshmemi_ptr(dest + teami->my_pe * nelems,
+                   nvshmemi_team_translate_pe_to_team_world_wrap(teami, dst_pe)),
+      source + nelems * dst_pe,
+      nelems * sizeof(TYPE),
+      cudaMemcpyDefault,
+      stream));
+}
+nvshmemi_coll_p2p_sync(teami, stream);
+```
+
+**Traffic pattern**
+
+- Essentially identical to NCCL CE AlltoAll:
+  - For each destination PE, copy `M*s` bytes from `source + M*dst_pe` into a destination slot at `dest + my_pe*M` on the remote PE.  
+  - Per‑rank sent bytes: `B_rank = N * M * s`.  
+  - System‑wide: `B_sys = N² * M * s`.
+
+**Latency model**
+
+Let:
+
+- `T_memcpy_setup` = cost to issue `N` `cudaMemcpyAsync` calls per rank.  
+- `T_p2p_sync` = cost of `nvshmemi_coll_p2p_sync` to ensure completion across PEs.
+
+Then:
+
+```text
+T_NVLS_AlltoAll ≈ T_memcpy_setup + T_p2p_sync + B_rank / B_eff_NVLS
+```
+
+Where `B_eff_NVLS` is the effective bandwidth of `cudaMemcpyAsync` over NVLS‑enabled symmetric heap regions.
+
+Qualitative comparison to CE:
+
+- `B_eff_NVLS` is similar in magnitude to `B_eff_CE`; both ultimately drive the same hardware (NVLink and memory controllers) with bulk copies.  
+- `T_memcpy_setup` is slightly larger than constructing a CE batch descriptor:
+  - NVSHMEM issues `O(N)` `cudaMemcpyAsync` calls per rank.  
+  - NCCL CE builds a single batch structure per rank and hands it to CE.  
+- `T_p2p_sync` vs `T_memop_sync` are conceptually similar: global synchronization barriers for memops.
+
+Thus for **large M**, NVSHMEM NVLS and NCCL CE AlltoAll should be in the same performance ballpark, with modest differences in software overhead. For **small M**, both suffer from fixed overhead, but NVSHMEM may pay slightly more per‑peer setup cost due to multiple `cudaMemcpyAsync` calls.
+
+**SM usage**
+
+- NVSHMEM NVLS P2P uses the CUDA runtime and NVLink engines; SM utilization is minimal, similar to CE AlltoAll.  
+- Device involvement is limited to the `nvshmemi_coll_p2p_sync` kernel/logic and any bookkeeping necessary for NVLS resources.
+
+**Scaling with N**
+
+- Like CE, `B_rank` scales linearly with N.  
+- Effective per‑GPU bandwidth `B_eff_NVLS` degrades as interconnect becomes saturated; the pattern is essentially the same as CE’s.  
+- Additional overhead from `O(N)` `cudaMemcpyAsync` calls may be noticeable when N is large and M is small.
+
+**Best suited for:**
+
+- Medium/large messages on systems with NVLS support and NVSHMEM symmetric heap already in use.  
+- Workloads that want low SM usage and are comfortable with NVSHMEM’s runtime requirements.
+
+#### 7.6.4 NVSHMEM device all‑to‑all
+
+The device all‑to‑all kernel (`alltoall_on_stream_kernel` → `nvshmemi_alltoall_threadgroup`) uses NVSHMEM’s device runtime to implement all‑to‑all via put/get operations across PEs.
+
+**Latency model**
+
+Within a given kernel launch:
+
+- Each threadgroup performs `O(N)` remote stores/loads to implement all‑to‑all.  
+- Synchronization is handled by NVSHMEM’s device threadgroup barriers.
+
+Approximate latency:
+
+```text
+T_NVSHMEM_dev_AlltoAll ≈ T_launch + T_device_barriers + B_rank / B_eff_dev
+```
+
+Where:
+
+- `T_launch` is CUDA kernel launch latency (non‑trivial for short collectives).  
+- `T_device_barriers` accounts for device‑side threadgroup synchronization.  
+- `B_eff_dev` is the effective bandwidth of NVSHMEM device collectives; often comparable to NVLS P2P for large messages, but may be lower when many small messages are serialized in a single kernel.
+
+**SM usage**
+
+- The device kernel actively consumes SM resources:
+  - Each threadgroup performs loads/stores and participates in barriers.  
+  - Occupancy is capped by the kernel’s block size and register/shared memory use.  
+- This makes device all‑to‑all more intrusive to concurrent compute than CE/NVLS P2P:
+  - If run on a high‑priority stream, it can preempt compute kernels.  
+  - If run on a low‑priority stream, it may progress slowly when SMs are busy.
+
+**Best suited for:**
+
+- Fine‑grained communication patterns where:
+  - All‑to‑all is invoked frequently inside device code.  
+  - You want to avoid host‑side kernel launches per operation and piggy‑back on an already running cooperative kernel.  
+- All‑to‑all integrated directly into compute kernels (e.g., tiled AllReduce implementations) where the SM footprint is acceptable and overlapping compute/comm at the warp/block level is desired.
+
+#### 7.6.5 Putting it together
+
+For **large‑message all‑to‑all** on symmetric‑memory‑capable systems:
+
+- **NCCL CE AlltoAll** and **NVSHMEM NVLS P2P AlltoAll** are often the best options:
+  - Both deliver near‑peak NVLink bandwidth with low SM consumption.  
+  - Differences mostly come from software overhead (batch descriptor vs `N` `cudaMemcpyAsync` calls) and integration (NCCL vs NVSHMEM runtime).
+
+For **small messages or high‑frequency all‑to‑all inside device code**:
+
+- **NCCL `ll_a2a`** in symmetric kernels and **NVSHMEM device all‑to‑all**:
+  - Minimize host involvement and can overlap with device‑side computation.  
+  - Consume SM resources and rely on polling or frequent synchronization, which can hurt when you need SMs for independent compute.  
+  - Shine when all‑to‑all is a tightly coupled part of the kernel’s logic (e.g., per‑tile exchanges in fused kernels).
+
+For **generic cases without symmetric memory**:
+
+- **NCCL P2P AlltoAll** (and NVSHMEM’s NCCL‑based path) remain robust defaults:
+  - No symmetric runtime or NVLS prerequisites.  
+  - Good performance for a wide range of sizes and topologies.  
+  - Some overhead from N² send/recv enqueuing, but this is amortized for large messages and moderate ranks.
+
+From a systems perspective, a reasonable rule of thumb is:
+
+- Use **CE/NVLS P2P** when you have symmetric memory/NVLS and want high throughput with minimal SM load.  
+- Use **device all‑to‑all (`ll_a2a` or NVSHMEM device kernels)** when you need fine‑grained, tightly integrated device‑side communication, and can afford the SM footprint.  
+- Fall back to **NCCL P2P** when portability and simplicity matter more than squeezing out the last few percent of bandwidth.
+
+---
+
+### 7.7 NCCL API & Execution Flow (Slide‑5 Mapping)
+
+This section overlays the slide “NCCL Overview – API and Execution Flow” onto the actual NCCL call chain in this repo.
+
+```mermaid
+flowchart TD
+  C1[Communicator Creation<br/>ncclCommInitRank()] --> G1
+  G1[Group Operation (start)<br/>ncclGroupStart()] --> OP
+  OP[Collective / P2P Ops<br/>ncclAllReduce(), ncclSend(), ncclRecv()<br/>→ ncclEnqueueCheck() → taskAppend()] --> G2
+  G2[Group Operation (end)<br/>ncclGroupEnd()<br/>→ ncclGroupEndInternal()<br/>→ groupLaunch()/doLaunches()] --> D1
+  D1[Communicator Destroy<br/>ncclCommDestroy()] 
+```
+
+**Communicator Creation → `ncclCommInitRank`**
+
+- User API:  
+  - [`ncclCommInitRank` declaration](../thirdparty/nccl/src/nccl.h.in#L169)
+- Implementation and internal flow:  
+  - [`ncclCommInitRank` definition](../thirdparty/nccl/src/init.cc#L2045) – top‑level entry, sets up config and calls `ncclCommInitRankDev`.  
+  - [`ncclCommInitRankDev`](../thirdparty/nccl/src/init.cc#L1964) – core implementation that:  
+    - Allocates and initializes `ncclComm` via `commAlloc`.  
+    - Performs bootstrap and unique‑ID exchange.  
+    - Calls transport and topology init helpers.  
+  - [`commAlloc`](../thirdparty/nccl/src/init.cc#L392) – constructs host‑side `ncclComm`, shared resources, transports, and allocs per‑comm structures.  
+  - [`devCommSetup`](../thirdparty/nccl/src/init.cc#L501) – builds the device‑side `ncclDevComm` + channels and copies them to GPU memory.
+
+**Group Operation (start) → `ncclGroupStart`**
+
+- User API:  
+  - [`ncclGroupStart`](../thirdparty/nccl/src/group.cc#L93)
+- Internal group bookkeeping:  
+  - Thread‑local group state (`ncclGroupDepth`, `ncclGroupCommHead`, `ncclAsyncJobs`) in [`group.cc`](../thirdparty/nccl/src/group.cc#L20).  
+  - `ncclGroupStartInternal` (in `group.h` / `group.cc`) increments depth and switches NCCL into “record‑only” mode so that later calls enqueue work.  
+  - [`ncclAsyncLaunch`](../thirdparty/nccl/src/group.cc#L28) – used by NCCL APIs to either:
+    - Run operations immediately when `ncclGroupDepth == 0`, or  
+    - Attach them as `ncclAsyncJob`s to `ncclAsyncJobs` when inside a group.
+
+**Collective Communication / P2P Communication → `ncclAllReduce`, `ncclSend`, `ncclRecv`**
+
+- Collective API entry:  
+  - [`ncclAllReduce` stub](../thirdparty/nccl/src/collectives.cc#L107) – constructs an `ncclInfo` and calls `ncclEnqueueCheck`.  
+  - Similar stubs for `ncclAllGather`, `ncclBroadcast`, etc. in the same file.
+- P2P API entry:  
+  - Signatures for `ncclSend` / `ncclRecv` in [`nccl.h.in`](../thirdparty/nccl/src/nccl.h.in#L495); their enqueue path is the P2P branch inside `taskAppend`.
+- Enqueue and planning:  
+  - [`ncclEnqueueCheck`](../thirdparty/nccl/src/enqueue.cc#L2620) – validates arguments, ensures communicator readiness, then calls `taskAppend(info->comm, info)`.  
+  - [`taskAppend`](../thirdparty/nccl/src/enqueue.cc#L2548):  
+    - For collectives like AllReduce, calls `collTaskAppend` to create `ncclTaskColl` entries.  
+    - For AlltoAll, expands into P2P send/recv tasks.  
+    - For P2P (`ncclFuncSend`/`ncclFuncRecv`), calls `p2pTaskAppend`.  
+  - [`ncclPrepareTasks`](../thirdparty/nccl/src/enqueue.cc#L340) and [`ncclTasksRegAndEnqueue`](../thirdparty/nccl/src/enqueue.cc#L200) – group and bin tasks, register buffers (UB/NVLS/IPC), and build device work structs (`ncclDevWorkColl`, `ncclDevWorkP2p`).
+- Device execution:  
+  - Collectives: `RunWorkColl<...>` specializations in [`device/all_reduce.h`](../thirdparty/nccl/src/device/all_reduce.h#L200) and other `device/*` files.  
+  - P2P: send/recv primitives in [`device/sendrecv.h`](../thirdparty/nccl/src/device/sendrecv.h#L1).  
+  - Transports: P2P/Net setup and data paths in [`transport/p2p.cc`](../thirdparty/nccl/src/transport/p2p.cc#L180) and [`transport/net.cc`](../thirdparty/nccl/src/transport/net.cc#L200).
+
+**Group Operation (end) → `ncclGroupEnd` / `groupLaunch` / `doLaunches`**
+
+- User API:  
+  - [`ncclGroupEnd`](../thirdparty/nccl/src/group.cc#L103) – calls `ncclGroupEndInternal`.
+- Group termination and launch:  
+  - [`ncclGroupEndInternal`](../thirdparty/nccl/src/group.cc#L646):  
+    - Decrements `ncclGroupDepth`; on the outermost `GroupEnd`, builds a `ncclGroupJob`.  
+    - Moves queued async jobs and communicator lists into the job.  
+    - For blocking groups, calls `groupLaunch`; for non‑blocking, spawns a thread running `groupLaunchNonBlocking`.
+  - [`groupLaunch`](../thirdparty/nccl/src/group.cc#L509):  
+    - Invokes `ncclPrepareTasksAndCollPreconnect` to build and pre‑connect collective tasks.  
+    - Calls [`ncclTasksRegAndEnqueue`](../thirdparty/nccl/src/enqueue.cc#L200) for each communicator to finalize device work queues.  
+    - Calls [`doLaunches`](../thirdparty/nccl/src/group.cc#L259) to:
+      - Pop `ncclKernelPlan`s from `planner.unlaunchedPlansHead`.  
+      - Launch `ncclLaunchKernel` for standard kernels or `ncclLaunchCeColl` for CE collectives.  
+      - Handle intra‑clique barriers and finish via `ncclLaunchFinish`.
+
+**Communicator Destroy → `ncclCommDestroy`**
+
+- User API:  
+  - [`ncclCommDestroy` declaration](../thirdparty/nccl/src/nccl.h.in#L192)  
+  - [`ncclCommDestroy` definition](../thirdparty/nccl/src/init.cc#L2358)
+- Destroy flow:  
+  - `ncclCommDestroy` in [`init.cc`](../thirdparty/nccl/src/init.cc#L2358):  
+    - Starts an internal group (`ncclGroupStartInternal`) to manage the destroy job.  
+    - Ensures the communicator is ready (`ncclCommEnsureReady`).  
+    - Creates an async job and launches `commReclaim` via `ncclAsyncLaunch`.  
+  - `commReclaim` (same file, above `ncclCommDestroy`) performs:
+    - Finalization of CE, symmetric kernels, and dev runtime.  
+    - Proxy thread joins and network teardown (`ncclNetFinalize` when appropriate).  
+    - Registration cleanup (`ncclRegCleanup`).  
+    - Context drop and freeing the `ncclComm` struct after `commPoison`.
+
+This call‑chain diagram plus the links above provide a direct “slide‑5 → source code” mapping for the NCCL API and execution flow in this repository.
+
