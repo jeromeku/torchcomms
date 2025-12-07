@@ -2364,6 +2364,44 @@ Comparing NCCL and NVSHMEM all‑to‑all implementations:
   - NCCL is **collectives‑centric**, with symmetric memory and `ll_a2a` added to optimize specific collectives (AllGather/ReduceScatter) and CE for efficient bulk transfers. All‑to‑all is primarily a collective exposed to applications, with internal variants (P2P vs CE) chosen based on capability.  
   - NVSHMEM is **PGAS‑centric**: all‑to‑all is one of many patterns you can build from put/get and device collectives. It prioritizes device‑side flexibility and integration with its symmetric heap over a single canonical all‑to‑all implementation.
 
+---
+
+### 7.6 Symmetric Memory Synopsis: NCCL vs NVSHMEM
+
+This section summarizes the main symmetric‑memory tradeoffs between NCCL and NVSHMEM; detailed traces live in [`codex/symmetric_memory.md`](symmetric_memory.md).
+
+**NCCL symmetric windows (`devr`)**
+- **What it is**: a per‑communicator runtime that wraps *arbitrary user buffers* in symmetric windows using CUDA VMM. The runtime builds a flat LSA virtual address space and exposes windows to device code via `ncclSymPtr` and `ncclDevComm.windowTable`.  
+- **Collectives it accelerates**:
+  - Symmetric kernels for AllReduce / AllGather / ReduceScatter.  
+  - All‑to‑all‑like exchanges inside these collectives using `ll_a2a` over a symmetric resource window.  
+  - CE collectives (including CE AlltoAll) that copy between symmetric windows with low SM usage.
+- **Latency vs throughput**:
+  - **Setup**: window registration is relatively expensive (VMM handle discovery, inter‑rank handle exchange, `cuMemMap` on all LSA ranks, bootstrap barriers). Best when amortized over many collectives on long‑lived tensors.  
+  - **Steady state**: once windows exist, symmetric kernels and `ll_a2a` offer very low per‑collective latency because the GPU drives communication directly; large messages see high throughput by combining NVLink/NVLS and wide symmetric loads/stores.
+- **Resource usage (SMs / engines)**:
+  - Symmetric kernels and `ll_a2a` are **SM‑resident** cooperative kernels that hold a slice of SMs for the duration of the collective; great for GPU‑driven workflows but must be budgeted against user compute.  
+  - CE collectives on symmetric windows primarily consume **copy engines and NVLink**, keeping extra SM pressure low.
+
+**NVSHMEM symmetric heap**
+- **What it is**: a global symmetric heap managed by `nvshmemi_symmetric_heap` and its subclasses (sysmem, pinned GPU, VMM GPU). All PEs see the same logical `heap_base` / `heap_size`, and device code uses that plus `peer_heap_base_*` to address remote data. External user buffers can be mapped into the heap with `nvshmemx_buffer_register_symmetric`.  
+- **Collectives it accelerates**:
+  - Device collectives (reduce, alltoall, fcollect, broadcast) implemented over the heap, with NVLS multicast used where possible.  
+  - CE all‑to‑all / fcollect patterns implemented as loops of `cudaMemcpyAsync` between symmetric heap segments, synchronized by stream memops.  
+  - Optional NCCL backends for some collectives (e.g., AllReduce, all‑to‑all) when that provides better performance.
+- **Latency vs throughput**:
+  - **Setup**: heap setup and growth pay the VMM and NVLS costs *once per heap chunk*, not per allocation. Individual `nvshmem_malloc` calls are cheap (mspace bookkeeping + barrier), making symmetric memory inexpensive to use per tensor.  
+  - **Steady state**:  
+    - CE collectives on the heap achieve high throughput for large messages with little SM involvement, similar to NCCL’s CE path.  
+    - Device collectives can exploit fine‑grained tiling and multicast loads/stores for high throughput on medium‑sized messages, but long‑running kernels can increase latency for unrelated work.
+- **Resource usage (SMs / engines)**:
+  - CE collectives are **copy‑engine‑heavy and SM‑light**, ideal when SMs are needed for compute.  
+  - NVSHMEM device collectives are **SM‑heavy**, similar to NCCL symmetric kernels, but live entirely in the NVSHMEM runtime and integrate naturally with its PGAS put/get model.
+
+**High‑level takeaway**
+- NCCL’s symmetric runtime is best viewed as an **optimization layer over NCCL collectives**, specializing a subset of buffers and operations for VMM‑based, device‑initiated communication and `ll_a2a` messaging.  
+- NVSHMEM’s symmetric heap is a **first‑class PGAS abstraction**: collectives (including all‑to‑all) are one use case on top of a general symmetric memory and RMA model, with the choice between CE vs device kernels giving a flexible latency/throughput/SM tradeoff per workload.
+
 - **Latency vs throughput vs SMs**:
   - For **large messages**, both NCCL CE AlltoAll and NVSHMEM NVLS P2P provide high throughput with low SM usage by using batched memcopies over symmetric memory.  
   - For **fine‑grained, high‑frequency exchanges**, NCCL’s `ll_a2a` and NVSHMEM’s device kernels offer low host overhead and tight device‑side control at the cost of higher SM utilization.  
@@ -2694,4 +2732,3 @@ flowchart TD
     - Context drop and freeing the `ncclComm` struct after `commPoison`.
 
 This call‑chain diagram plus the links above provide a direct “slide‑5 → source code” mapping for the NCCL API and execution flow in this repository.
-
